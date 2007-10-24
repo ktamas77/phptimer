@@ -6,16 +6,18 @@
 
 class Timer {
 	
-	private $timeArray = Array ();
+	$timeArray = Array ();
 	
-	private function getTime() {
+	// --- private
+	function getTime() {
 		$time = microtime();
 		$time = explode (' ', $time);
 		$time = $time [1] + $time [0];
 		return $time;
 	}
 	
-	private function extendRecord ($label) {
+	// --- private
+	function extendRecord ($label) {
 		$value = &$this->timeArray [$label];
 		if ($value ["stop"] > 0) {
 			$value ["range"] = $value ["stop"]-$value["start"];
@@ -27,32 +29,38 @@ class Timer {
 		$value ["range_human"] = sprintf ("%01.2f", $value ["range"]); 
 	}
 	
-	public function start ($label) {
+	// === public
+	function start ($label) {
 		$this->timeArray[$label]["start"] = $this->getTime();
 		$this->timeArray[$label]["stop"] = 0;
 	}
 	
-	public function stop ($label) {
+	// === public
+	function stop ($label) {
 		if (isset ($this->timeArray[$label]["stop"])) {
 			$this->timeArray[$label]["stop"] = $this->getTime();
 		}
 	}
 	
-	public function stopAll () {
+	// === public
+	function stopAll () {
 		foreach ($this->timeArray as $label => $value) $this->stop ($label);
 	}
 	
-	public function del ($label) {
+	// === public
+	function del ($label) {
 		if (isset ($this->timeArray[$label])) {
 			unset ($this->timeArray[$label]);
 		}
 	}
 	
-	public function delAll () {
+	// === public
+	function delAll () {
 		$this->timeArray = Array ();
 	}
 	
-	public function get ($label) {
+	// === public
+	function get ($label) {
 		if (isset ($this->timeArray[$label])) {
 			$this->extendRecord ($label);
 			return $this->timeArray[$label];
@@ -61,7 +69,8 @@ class Timer {
 		}
 	}
 	
-	public function getAll () {
+	// === public
+	function getAll () {
 		foreach ($this->timeArray as $label => $value) $this->extendRecord ($label);
 		return $this->timeArray;
 	}
