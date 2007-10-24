@@ -5,8 +5,9 @@
 */
 
 class Timer {
-	
-	$timeArray = Array ();
+
+	// --- private	
+	var $timeArray = Array ();
 	
 	// --- private
 	function getTime() {
