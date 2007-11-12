@@ -7,6 +7,7 @@
 class Timer {
 
 	// --- private ---
+	var $privateTime = Array ();
 	var $timeArray = Array ();
 	
 	// --- private ---
@@ -21,12 +22,14 @@ class Timer {
 	function extendRecord ($label) {
 		$value = &$this->timeArray [$label];
 		if ($value ["stop"] > 0) {
-			$value ["range"] = $value ["allranges"];
+			$value ["range"] = $this->privateTime [$label]["allranges"];
 			$value ["status"] = "stopped";
 		} else {
-			$value ["range"] = $this->getTime() - $value ["start"] + $value ["allranges"];
+			$value ["range"] = ($this->getTime() - $value ["start"]) + $this->privateTime [$label]["allranges"];
 			$value ["status"] = "running";
 		}
+		$value ["average"] = $value["range"]/$value["starts"];
+		$value ["average_human"] = sprintf ("%01.2f", $value ["average"]); 
 		$value ["range_human"] = sprintf ("%01.2f", $value ["range"]); 
 	}
 	
@@ -34,21 +37,21 @@ class Timer {
 	function start ($label) {
 		$this->timeArray[$label]["start"] = $this->getTime();
 		$this->timeArray[$label]["stop"] = 0;
-		if (! isset ($this->timeArray[$label]["starts"])) $this->timeArray[$label]["starts"] = 0; else $this->timeArray[$label]["starts"] ++;
-		if (! isset ($this->timeArray[$label]["allranges"])) $this->timeArray[$label]["allranges"] = 0;
+		if (! isset ($this->timeArray[$label]["starts"])) $this->timeArray[$label]["starts"] = 1; else $this->timeArray[$label]["starts"]++;
+		if (! isset ($this->privateTime [$label]["allranges"])) $this->privateTime [$label]["allranges"] = 0;
 	}
 	
 	// === public ===
 	function stop ($label) {
 		if (isset ($this->timeArray[$label]["stop"])) {
 			$this->timeArray[$label]["stop"] = $this->getTime();
-			$this->timeArray[$label]["allranges"] += $this->timeArray[$label]["stop"]-$this->timeArray[$label]["start"];
+			$this->privateTime [$label]["allranges"] += $this->timeArray[$label]["stop"]-$this->timeArray[$label]["start"];
 		}
 	}
 	
 	// === public ===	
 	function restart ($label) {
-		if (isset ($this->timeArray[$label]["stop"]))	unset ($this->timeArray[$label]["allranges"]);
+		if (isset ($this->timeArray[$label]["stop"]))	unset ($this->privateTime [$label]["allranges"]);
 		$this->start ($label);
 	}
 
