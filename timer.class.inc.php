@@ -21,17 +21,17 @@ class Timer {
 	function extendRecord ($label) {
 		$value = &$this->timeArray [$label];
 		if ($value ["stop"] > 0) {
-			$value ["range"] = $value ["stop"]-$value["start"]+$value["allranges"];
+			$value ["range"] = $value ["allranges"];
 			$value ["status"] = "stopped";
 		} else {
-			$value ["range"] = $this->getTime() - $value ["start"]+$value["allranges"];
+			$value ["range"] = $this->getTime() - $value ["start"] + $value ["allranges"];
 			$value ["status"] = "running";
 		}
 		$value ["range_human"] = sprintf ("%01.2f", $value ["range"]); 
 	}
 	
 	// === public ===
-	function start ($label, $reset = true) {
+	function start ($label) {
 		$this->timeArray[$label]["start"] = $this->getTime();
 		$this->timeArray[$label]["stop"] = 0;
 		if (! isset ($this->timeArray[$label]["starts"])) $this->timeArray[$label]["starts"] = 0; else $this->timeArray[$label]["starts"] ++;
@@ -42,8 +42,14 @@ class Timer {
 	function stop ($label) {
 		if (isset ($this->timeArray[$label]["stop"])) {
 			$this->timeArray[$label]["stop"] = $this->getTime();
-			$this->timeArray[$label]["allranges"] += $value ["stop"]-$value["start"];
+			$this->timeArray[$label]["allranges"] += $this->timeArray[$label]["stop"]-$this->timeArray[$label]["start"];
 		}
+	}
+	
+	// === public ===	
+	function restart ($label) {
+		if (isset ($this->timeArray[$label]["stop"]))	unset ($this->timeArray[$label]["allranges"]);
+		$this->start ($label);
 	}
 
 	// === public ===
