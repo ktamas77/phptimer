@@ -6,10 +6,10 @@
 
 class Timer {
 
-	// --- private	
+	// --- private ---
 	var $timeArray = Array ();
 	
-	// --- private
+	// --- private ---
 	function getTime() {
 		$time = microtime();
 		$time = explode (' ', $time);
@@ -17,50 +17,53 @@ class Timer {
 		return $time;
 	}
 	
-	// --- private
+	// --- private ---
 	function extendRecord ($label) {
 		$value = &$this->timeArray [$label];
 		if ($value ["stop"] > 0) {
-			$value ["range"] = $value ["stop"]-$value["start"];
+			$value ["range"] = $value ["stop"]-$value["start"]+$value["allranges"];
 			$value ["status"] = "stopped";
 		} else {
-			$value ["range"] = $this->getTime() - $value ["start"];
+			$value ["range"] = $this->getTime() - $value ["start"]+$value["allranges"];
 			$value ["status"] = "running";
 		}
 		$value ["range_human"] = sprintf ("%01.2f", $value ["range"]); 
 	}
 	
-	// === public
-	function start ($label) {
+	// === public ===
+	function start ($label, $reset = true) {
 		$this->timeArray[$label]["start"] = $this->getTime();
 		$this->timeArray[$label]["stop"] = 0;
+		if (! isset ($this->timeArray[$label]["starts"])) $this->timeArray[$label]["starts"] = 0; else $this->timeArray[$label]["starts"] ++;
+		if (! isset ($this->timeArray[$label]["allranges"])) $this->timeArray[$label]["allranges"] = 0;
 	}
 	
-	// === public
+	// === public ===
 	function stop ($label) {
 		if (isset ($this->timeArray[$label]["stop"])) {
 			$this->timeArray[$label]["stop"] = $this->getTime();
+			$this->timeArray[$label]["allranges"] += $value ["stop"]-$value["start"];
 		}
 	}
-	
-	// === public
+
+	// === public ===
 	function stopAll () {
 		foreach ($this->timeArray as $label => $value) $this->stop ($label);
 	}
 	
-	// === public
+	// === public ===
 	function del ($label) {
 		if (isset ($this->timeArray[$label])) {
 			unset ($this->timeArray[$label]);
 		}
 	}
 	
-	// === public
+	// === public ===
 	function delAll () {
 		$this->timeArray = Array ();
 	}
 	
-	// === public
+	// === public ===
 	function get ($label) {
 		if (isset ($this->timeArray[$label])) {
 			$this->extendRecord ($label);
@@ -70,7 +73,7 @@ class Timer {
 		}
 	}
 	
-	// === public
+	// === public ===
 	function getAll () {
 		foreach ($this->timeArray as $label => $value) $this->extendRecord ($label);
 		return $this->timeArray;
