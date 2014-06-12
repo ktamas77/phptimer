@@ -9,6 +9,7 @@
  * @package   PHPTimer
  * @author    Tamas Kalman <ktamas77@gmail.com>
  * @copyright 2007,2012 (c) Tamas Kalman
+ * @link      https://github.com/ktamas77/phptimer
  * 
  */
 class Timer
