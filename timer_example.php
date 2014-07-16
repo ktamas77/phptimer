@@ -34,5 +34,3 @@ for ($i = 0; $i < 10; $i++) {
 }
 
 var_dump($timer->getAll());
-
-?>
