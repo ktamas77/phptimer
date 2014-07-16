@@ -5,6 +5,7 @@ An easy to use 100% native PHP library to profile PHP code.
 
 You can start/stop timers at any point in the code.
 
+```
   $timer = new Timer();
   
   $timer->start('cycle');
@@ -20,3 +21,4 @@ You can start/stop timers at any point in the code.
   }  
   
   var_dump($timer->getAll());
+```
