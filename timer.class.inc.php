@@ -1,36 +1,32 @@
 <?php
-
 /**
  * PHPTimer Class
  *
  * PHP version 5
- * 
+ *
  * @category  Profiling
  * @package   PHPTimer
  * @author    Tamas Kalman <ktamas77@gmail.com>
  * @copyright 2007,2012 (c) Tamas Kalman
  * @link      https://github.com/ktamas77/phptimer
- * 
+ *
  */
 class Timer
 {
-
-    private $_privateTime;
-    private $_timeArray;
-    private $_timerMask;
-
+    protected $_privateTime;
+    protected $_timeArray;
+    protected $_timerMask;
     function __construct()
     {
         $this->_privateTime = Array();
         $this->_timeArray = Array();
         $this->_timerMask = '%01.2f';
     }
-
     /**
      * Starts a timer with a specified label
-     * 
+     *
      * @param String $label Name of the timer
-     * 
+     *
      * @return void
      */
     public function start($label)
@@ -46,13 +42,12 @@ class Timer
             $this->_privateTime[$label]['allranges'] = 0;
         }
     }
-
     /**
      * Stops a timer with the specified label (if exists)
-     * 
+     *
      * @param String $label Name of the timer
-     * 
-     * @return void 
+     *
+     * @return void
      */
     public function stop($label)
     {
@@ -61,12 +56,11 @@ class Timer
             $this->_privateTime[$label]['allranges'] += $this->_timeArray[$label]['stop'] - $this->_timeArray[$label]['start'];
         }
     }
-
     /**
      * Restarts a timer with the specified label (if exists)
-     * 
-     * @param String $label Name of the timer 
-     * 
+     *
+     * @param String $label Name of the timer
+     *
      * @return void
      */
     public function restart($label)
@@ -76,11 +70,10 @@ class Timer
         }
         $this->start($label);
     }
-
     /**
      * Stops all timers
-     * 
-     * @return void 
+     *
+     * @return void
      */
     public function stopAll()
     {
@@ -88,12 +81,11 @@ class Timer
             $this->stop($label);
         }
     }
-
     /**
      * Deletes a timer
-     * 
+     *
      * @param String $label Name of the timer
-     * 
+     *
      * @return void
      */
     public function del($label)
@@ -102,23 +94,21 @@ class Timer
             unset($this->_timeArray[$label]);
         }
     }
-
     /**
      * Deletes all timers
-     * 
-     * @return void 
+     *
+     * @return void
      */
     public function delAll()
     {
         $this->_timeArray = Array();
     }
-
     /**
      * Returns the actual state of a timer
-     * 
+     *
      * @param String $label TImer Name
-     * 
-     * @return Array|Boolean Timer Data or False if there is no such timer 
+     *
+     * @return Array|Boolean Timer Data or False if there is no such timer
      */
     public function get($label)
     {
@@ -129,11 +119,10 @@ class Timer
             return false;
         }
     }
-
     /**
      * Returns with all timers' data
-     * 
-     * @return Array 
+     *
+     * @return Array
      */
     public function getAll()
     {
@@ -142,54 +131,75 @@ class Timer
         }
         return $this->_timeArray;
     }
-    
+    /**
+     * Print all timers to the screen
+     *
+     * @param string $html_wrapper, the string to wrap the results in.
+     * e.g. 'pre'. Note that the '<'' and '>' will be added by the function.
+     *
+     * @param string $measurement, which measurement to display, e.g.
+     * range_human or average.
+     *
+     * @return void
+     */
+    public function printAll($html_wrapper = NULL, $measurement = 'range_human') {
+        if ($html_wrapper) {
+            echo "<$html_wrapper>\n";
+        }
+        $timers = $this->getAll();
+        foreach ($timers as $timer_name => $value) {
+            echo "timer '$timer_name': $value[$measurement] seconds<br />";
+        }
+        if ($html_wrapper) {
+            echo "</$html_wrapper>\n";
+        }
+    }
+
     /**
      * Sets timer mask for human readable format
-     * 
+     *
      * @param String $mask mask
-     * 
+     *
      * @return void
      */
     public function setTimerMask($mask) {
         $this->_timerMask = $mask;
     }
-    
+
     /**
      * Returns with current timer mask
-     * 
-     * @return String Timer Mask 
+     *
+     * @return String Timer Mask
      */
     public function getTimerMask() {
         return $this->_timerMask;
     }
-
     /**
      * Actual Time
-     * 
-     * @return String Time 
+     *
+     * @return String Time
      */
-    private function _getTime()
+    protected function _getTime()
     {
         $time = microtime();
         $time = explode(' ', $time);
         $time = $time [1] + $time [0];
         return $time;
     }
-
     /**
      * Extends the current state of a timer with human readable information
-     * 
+     *
      * status       : running|stopped
      * range        : all active running ranges combined for the label
      * average      : range / original start time
      * average_human: average in human readable format
      * range_human  : range length in human readable format
-     * 
+     *
      * @param String $label Name of the timer
-     * 
+     *
      * @return void
      */
-    private function _extendRecord($label)
+    protected function _extendRecord($label)
     {
         $value = &$this->_timeArray[$label];
         if ($value['stop'] > 0) {
@@ -203,5 +213,6 @@ class Timer
         $value['average_human'] = sprintf($this->getTimerMask(), $value['average']);
         $value['range_human'] = sprintf($this->getTimerMask(), $value['range']);
     }
-    
+
 }
+?>
