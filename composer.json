@@ -1,0 +1,12 @@
+{
+    "name": "ktamas77/phptimer",
+    "description": "Native PHP Library to profile PHP code.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tamas Kalman",
+            "email": "ktamas77@gmail.com"
+        }
+    ],
+    "require": {}
+}

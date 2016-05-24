@@ -15,9 +15,9 @@
 class Timer
 {
 
-    var $_privateTime;
-    var $_timeArray;
-    var $_timerMask;
+    private $_privateTime;
+    private $_timeArray;
+    private $_timerMask;
 
     function __construct()
     {
