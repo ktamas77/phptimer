@@ -1,20 +1,20 @@
 {
-    "name": "ktamas77/phptimer",
-    "description": "Native PHP Library to profile PHP code.",
-    "type": "library",
-    "license": "MIT",
-    "version": "1.0.0",
-    "keywords": [
-        "profiler",
-        "timer"
-    ],
-    "require": {
-        "php": ">=5.3.0"
-    },
-    "authors": [
-        {
-            "name": "Tamas Kalman",
-            "email": "ktamas77@gmail.com"
-        }
-    ]
+  "name": "ktamas77/phptimer",
+  "description": "Native PHP Library to profile PHP code.",
+  "type": "library",
+  "license": "MIT",
+  "version": "1.0.0",
+  "keywords": [
+    "profiler",
+    "timer"
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "authors": [
+    {
+      "name": "Tamas Kalman",
+      "email": "ktamas77@gmail.com"
+    }
+  ]
 }

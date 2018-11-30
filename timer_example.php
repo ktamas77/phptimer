@@ -3,7 +3,7 @@
 
 /**
  * Timer.class example script
- * 
+ *
  * @author ktamas77 at gmail dot com
  */
 
@@ -30,7 +30,9 @@ $timer->stop('date');
 
 for ($i = 0; $i < 10; $i++) {
     $timer->start("subloop");
-    for ($j = 0; $j < 1000000; $j++) $a = $i * $j;
+    for ($j = 0; $j < 1000000; $j++) {
+        $a = $i * $j;
+    }
     $timer->stop("subloop");
 }
 
