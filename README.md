@@ -1,34 +1,71 @@
 PHPTimer
 ========
 
+> Note: v2.0.0 requires PHP 7.3 and using its own namespace.
+>
+> For PHP 5 projects please use v1.0.0
+
 An easy to use 100% native PHP library to profile PHP code.
 
 You can start/stop timers at any point in the code.
 
-```php
+#### v2.0.0 use for PHP 7.3+:
 
-  require_once 'timer.class.inc.php';
+Installation:
+
+```bash
+composer require ktamas77/phptimer
+```
+
+Use in code:
+
+
+```php
+use ktamas77\phptimer\Timer;
+```
+
+#### v1.0.0 (legacy) use for PHP 5:
+
+Installation: 
+
+```bash
+composer require ktamas77/phptimer:1.0.0
+```
+
+Use in code:
+
+
+```php
+<php
+
+require_once 'timer.class.inc.php';
+```  
   
-  $timer = new Timer();
+### Example use:
   
-  $timer->start('cycle');
-  for ($i = 0; $i < 100000; $i++) {
+```php
+$timer = new Timer();
+
+$timer->start('cycle');
+    for ($i = 0; $i < 100000; $i++) {
     $a *= $i;
-  }
-  $timer->stop('cycle');
-  
-  for ($i = 0; $i < 10; $i++) {
+}
+$timer->stop('cycle');
+
+for ($i = 0; $i < 10; $i++) {
     $timer->start("subloop");
-    for ($j = 0; $j < 1000000; $j++) $a = $i * $j;
+    for ($j = 0; $j < 1000000; $j++) {
+        $a = $i * $j;
+    }
     $timer->stop("subloop");
-  }  
-  
-  var_dump($timer->getAll());
+}  
+
+var_dump($timer->getAll());
 ```
 
 Result:
 
-```
+```bash
 php timer_example.php 
 
 array(3) {
@@ -90,28 +127,4 @@ array(3) {
     string(4) "0.33"
   }
 }
-```
-
-
-#### The MIT License (MIT)
-```
-Copyright (c) 2007,2016 Tamas Kalman
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
 ```
